@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>夏山熊猫营中国儿童少年基金会电子证书账号密码查询</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7; /* 更轻的背景色 */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* 最小高度以保持内容垂直居中 */
+        }
+
+        .container {
+            width: 90%; /* 更宽的容器 */
+            max-width: 700px;
+            padding: 70px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 微弱的阴影效果 */
+            border-radius: 10px; /* 更大的圆角 */
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px; /* 增加标题下方的间距 */
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px; /* 增加输入框下方的间距 */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            margin-top: 20px;
+            display: none;
+        }
+
+        #result h2 {
+            color: #007bff;
+        }
+
+        #result p {
+            font-weight: bold;
+            color: #333;
+            white-space: pre-line;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>夏山熊猫营中国儿童少年基金会电子证书账号密码查询</h1>
+        <form id="camperForm" method="POST">
+            <label for="camper_id">营员证件号：</label>
+            <input type="text" id="camper_id" name="camper_id" required>
+            <button type="submit">查询</button>
+        </form>
+        <div id="result">
+            <h2>查询结果</h2>
+            <p id="resultText"></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('camperForm');
+            const resultDiv = document.getElementById('result');
+            const resultText = document.getElementById('resultText');
+
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const camperId = document.getElementById('camper_id').value;
+                const response = await fetch('/', {
+                    method: 'POST',
+                    body: new URLSearchParams({ camper_id: camperId }),
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                });
+                const data = await response.text();
+
+                // 检查结果文本是否包含 "证件号不存在"
+                if (data.includes("证件号不存在")) {
+                    resultText.textContent = "证件号不存在，请确认后重新录入";
+                } else {
+                    // 格式化结果文本
+                    const parts = data.split('\n');
+                    const formattedText = parts.map(part => part.trim()).join('<br>');
+                    resultText.innerHTML = formattedText;
+                }
+                resultDiv.style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html>
